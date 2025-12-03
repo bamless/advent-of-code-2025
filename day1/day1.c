@@ -5,7 +5,7 @@
 #define EXTLIB_IMPL
 #include "../common/extlib.h"
 
-int parse_int(StringSlice ss) {
+static int parse_int(StringSlice ss) {
     int num = 0;
     size_t i = 0;
     while(i < ss.size && isdigit(ss.data[i])) {
@@ -15,7 +15,7 @@ int parse_int(StringSlice ss) {
     return num;
 }
 
-int mod(int a, int b) {
+static int mod(int a, int b) {
     int r = a % b;
     return (r < 0) ? r + b : r;
 }

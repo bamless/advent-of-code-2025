@@ -1,7 +1,21 @@
 CFLAGS=-std=c11 -Wall -Wextra
+BUILDDIR=build
 
-day1/day1: day1/day1.c build
-	$(CC) $(CFLAGS) ./day1/day1.c -o ./build/day1
+SOURCES := $(wildcard day*/day*.c)
+TARGETS := $(addprefix $(BUILDDIR)/,$(notdir $(basename $(SOURCES))))
 
-build:
-	mkdir -p build
+.PHONY: all
+all: $(TARGETS)
+
+$(BUILDDIR)/day1: day1/day1.c | $(BUILDDIR)
+	$(CC) $(CFLAGS) $< -o $@
+
+$(BUILDDIR)/day2: day2/day2.c | $(BUILDDIR)
+	$(CC) $(CFLAGS) $< -o $@
+
+$(BUILDDIR):
+	mkdir -p $(BUILDDIR)
+
+.PHONY: clean
+clean:
+	rm -rf $(BUILDDIR)
