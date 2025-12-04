@@ -17,6 +17,9 @@ $(BUILDDIR)/day2: day2/day2.c | $(BUILDDIR)
 $(BUILDDIR)/day3: day3/day3.c | $(BUILDDIR)
 	$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
 
+$(BUILDDIR)/day4: day4/day4.c | $(BUILDDIR)
+	$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
+
 $(BUILDDIR):
 	mkdir -p $(BUILDDIR)
 
