@@ -1,8 +1,18 @@
 #include <math.h>
+#include <stdint.h>
 #include <stdio.h>
 
 #define EXTLIB_IMPL
 #include "../common/extlib.h"
+
+static int64_t ipow(int64_t base, uint64_t exp) {
+    int64_t res = 1;
+    for(; exp > 0; exp >>= 1) {
+        if(exp & 1) res *= base;
+        base *= base;
+    }
+    return res;
+}
 
 int main(int argc, char** argv) {
     if(argc == 1) {
@@ -24,13 +34,14 @@ int main(int argc, char** argv) {
         const char* next_start = line.data;
         for(int i = 0; i < max_batteries_in_bank; i++) {
             char max_dig = 0;
-            for(const char* it = next_start; it < line.data + line.size - (max_batteries_in_bank - i - 1); it++) {
+            for(const char* it = next_start;
+                it < line.data + line.size - (max_batteries_in_bank - i - 1); it++) {
                 if(*it > max_dig) {
                     max_dig = *it;
                     next_start = it + 1;
                 }
             }
-            jolt += (max_dig - '0') * pow(10, (max_batteries_in_bank - i - 1));
+            jolt += (max_dig - '0') * ipow(10, (max_batteries_in_bank - i - 1));
         }
         res += jolt;
     }
