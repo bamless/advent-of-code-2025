@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
                     next_start = it + 1;
                 }
             }
-            jolt += (max_dig - '0') * powl(10, (max_batteries_in_bank - i - 1));
+            jolt += (max_dig - '0') * pow(10, (max_batteries_in_bank - i - 1));
         }
         res += jolt;
     }
