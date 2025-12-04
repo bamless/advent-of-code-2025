@@ -1,3 +1,5 @@
+#include <math.h>
+#include <stddef.h>
 #include <stdio.h>
 
 #define EXTLIB_IMPL
@@ -14,10 +16,10 @@ static size_t parse_int(StringSlice ss) {
 }
 
 static void write_int(size_t n, StringBuffer* out) {
-    // I'm lazy
-    size_t len = snprintf(NULL, 0, "%zu", n);
+    int len = (int)log10(n) + 1;
     sb_reserve(out, out->size + len + 1);
-    snprintf(out->items + out->size, len + 1, "%zu", n);
+    int res = snprintf(out->items + out->size, len + 1, "%zu", n);
+    ASSERT(len == res, "StringBuffer overflow");
     out->size += len;
 }
 

@@ -1,4 +1,5 @@
-CFLAGS=-std=c11 -Wall -Wextra
+CFLAGS?=-std=c11 -Wall -Wextra
+LDFLAGS=-lm
 BUILDDIR=build
 
 SOURCES := $(wildcard day*/day*.c)
@@ -8,10 +9,13 @@ TARGETS := $(addprefix $(BUILDDIR)/,$(notdir $(basename $(SOURCES))))
 all: $(TARGETS)
 
 $(BUILDDIR)/day1: day1/day1.c | $(BUILDDIR)
-	$(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
 
 $(BUILDDIR)/day2: day2/day2.c | $(BUILDDIR)
-	$(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
+
+$(BUILDDIR)/day3: day3/day3.c | $(BUILDDIR)
+	$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
 
 $(BUILDDIR):
 	mkdir -p $(BUILDDIR)
