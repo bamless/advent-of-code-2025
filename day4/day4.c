@@ -7,6 +7,7 @@
 
 #define EXTLIB_IMPL
 #include "../common/extlib.h"
+#include "../common/timer.h"
 
 typedef struct {
     char* items;
@@ -44,35 +45,39 @@ static bool convolve(const Board* board, size_t row, size_t col, uint16_t kernel
 }
 
 static void part1(const Board* b) {
-    size_t res = 0;
-    for(int x = 0; x < b->width; x++) {
-        for(int y = 0; y < b->height; y++) {
-            if(get_at(b, x, y) == '@' && convolve(b, x, y, 3)) {
-                res++;
-            }
-        }
-    }
-    printf("Part 1: %zu\n", res);
-}
-
-static void part2(Board* b) {
-    size_t res = 0;
-    bool changed;
-
-    do {
-        changed = false;
+    TIMED("Part 1") {
+        size_t res = 0;
         for(int x = 0; x < b->width; x++) {
             for(int y = 0; y < b->height; y++) {
                 if(get_at(b, x, y) == '@' && convolve(b, x, y, 3)) {
-                    changed = true;
-                    set_at(b, x, y, 'x');
                     res++;
                 }
             }
         }
-    } while(changed);
+        printf("Part 1: %zu\n", res);
+    }
+}
 
-    printf("Part 2: %zu\n", res);
+static void part2(Board* b) {
+    TIMED("Part 2") {
+        size_t res = 0;
+        bool changed;
+
+        do {
+            changed = false;
+            for(int x = 0; x < b->width; x++) {
+                for(int y = 0; y < b->height; y++) {
+                    if(get_at(b, x, y) == '@' && convolve(b, x, y, 3)) {
+                        changed = true;
+                        set_at(b, x, y, 'x');
+                        res++;
+                    }
+                }
+            }
+        } while(changed);
+
+        printf("Part 2: %zu\n", res);
+    }
 }
 
 int main(int argc, char** argv) {

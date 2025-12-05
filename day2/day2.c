@@ -4,6 +4,7 @@
 
 #define EXTLIB_IMPL
 #include "../common/extlib.h"
+#include "../common/timer.h"
 
 static size_t parse_int(StringSlice ss) {
     size_t num = 0;
@@ -55,28 +56,30 @@ int main(int argc, char** argv) {
     StringBuffer input = {0};
     if(!read_file(input_file, &input)) return 1;
 
-    size_t part1 = 0;
-    size_t part2 = 0;
+    TIMED("Part 1 & 2") {
+        size_t part1 = 0;
+        size_t part2 = 0;
 
-    StringSlice ss = sb_to_ss(input);
-    StringBuffer str = {0};
-    while(ss.size) {
-        StringSlice range = ss_split_once(&ss, ',');
-        size_t first = parse_int(ss_split_once(&range, '-'));
-        size_t second = parse_int(ss_split_once(&range, '-'));
+        StringSlice ss = sb_to_ss(input);
+        StringBuffer str = {0};
+        while(ss.size) {
+            StringSlice range = ss_split_once(&ss, ',');
+            size_t first = parse_int(ss_split_once(&range, '-'));
+            size_t second = parse_int(ss_split_once(&range, '-'));
 
-        for(size_t n = first; n <= second; n++) {
-            str.size = 0;
-            write_int(n, &str);
-            if(is_repeated_part1(sb_to_ss(str))) {
-                part1 += n;
-            }
-            if(is_repeated_part2(sb_to_ss(str))) {
-                part2 += n;
+            for(size_t n = first; n <= second; n++) {
+                str.size = 0;
+                write_int(n, &str);
+                if(is_repeated_part1(sb_to_ss(str))) {
+                    part1 += n;
+                }
+                if(is_repeated_part2(sb_to_ss(str))) {
+                    part2 += n;
+                }
             }
         }
-    }
 
-    printf("Part 1: %zu\n", part1);
-    printf("Part 2: %zu\n", part2);
+        printf("Part 1: %zu\n", part1);
+        printf("Part 2: %zu\n", part2);
+    }
 }

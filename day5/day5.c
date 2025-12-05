@@ -23,7 +23,7 @@ typedef struct {
     size_t* items;
     size_t size, capacity;
     Allocator* allocator;
-} Ingridients;
+} Ingredients;
 
 static bool in_range(Range r, size_t i) {
     return r.start <= i && i <= r.end;
@@ -78,13 +78,13 @@ static Ranges parse_ranges(StringSlice* ss) {
     return ranges;
 }
 
-static Ingridients parse_ingridients(StringSlice* ss) {
-    Ingridients ingridients = {0};
+static Ingredients parse_ingredients(StringSlice* ss) {
+    Ingredients ingredients = {0};
     while(ss->size) {
         StringSlice line = ss_split_once(ss, '\n');
-        array_push(&ingridients, parse_int(line));
+        array_push(&ingredients, parse_int(line));
     }
-    return ingridients;
+    return ingredients;
 }
 
 int main(int argc, char** argv) {
@@ -95,18 +95,18 @@ int main(int argc, char** argv) {
     const char* input_file = argv[1];
 
     StringBuffer input = {0};
-    if(!read_file(input_file, &input)) return false;
+    if(!read_file(input_file, &input)) return 1;
 
     TIMED("Part 1") {
         StringSlice ss = sb_to_ss(input);
         Ranges ranges = parse_ranges(&ss);
-        Ingridients ingridients = parse_ingridients(&ss);
+        Ingredients ingredients = parse_ingredients(&ss);
         qsort(ranges.items, ranges.size, sizeof(*ranges.items), &range_cmp);
         Ranges sorted_and_merged_ranges = merge_ranges(&ranges);
 
         // Brute force 'cause I can't be fucked to do binary search rn
         size_t fresh = 0;
-        array_foreach(const size_t, i, &ingridients) {
+        array_foreach(const size_t, i, &ingredients) {
             array_foreach(const Range, r, &sorted_and_merged_ranges) {
                 if(in_range(*r, *i)) {
                     fresh++;
