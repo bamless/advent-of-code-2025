@@ -50,8 +50,7 @@ void part1(const StringBuffer* input) {
         StringSlice first_line = ss_trim(ss_split_once(&ss, '\n'));
         while(first_line.size) {
             size_t n = parse_int(ss_split_once_ws(&first_line));
-            accs.items[idx] = n;
-            idx++;
+            accs.items[idx++] = n;
         }
 
         while(ss.size) {
